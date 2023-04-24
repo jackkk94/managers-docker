@@ -24,11 +24,10 @@ jobs:
           cache: 'npm'
           cache-dependency-path: './client/package-lock.json'
       - name: install dependencies
-        run: npm ci
-      - name: install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: run lint
         run: npm run lint
       - name: run test
         run: npm run test:prod
-  
+
+
