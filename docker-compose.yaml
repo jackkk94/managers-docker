@@ -1,0 +1,7 @@
+version: "3.7"
+services:
+  frontend:
+    image: cr.yandex/crpgdibs74khufptbu4j:{{ env.IMAGE_TAG_FRONTEND }}
+    ports:
+      - 80:80
+    restart: always
