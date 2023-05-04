@@ -1,0 +1,10 @@
+
+<app-filter-by-name (changed)="onTextFilterChange($event)"></app-filter-by-name>
+
+
+<div class="row">
+    <app-user-list [users]="users" class="col-md-8"></app-user-list>
+    <div class="col-md-4">
+        <app-filter-by-city></app-filter-by-city>
+    </div>
+</div>

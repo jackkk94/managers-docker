@@ -11,20 +11,9 @@ export enum AppRoutes {
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./config/config.module').then(m => m.ConfigModule)
+    loadChildren: () => import('./pages/users/users.module').then(m => m.UsersModule)
   },
-  {
-    path: AppRoutes.NgXs,
-    loadChildren: () => import('./ngxs/ngxs-entity.module').then(m => m.NgXsModule)
-  },
-  {
-    path: AppRoutes.NgRx,
-    loadChildren: () => import('./ngrx/ngrx-entity.module').then(m => m.NgRxModule)
-  },
-  {
-    path: AppRoutes.Results,
-    loadChildren: () => import('./results/results.module').then(m => m.ResultsModule)
-  }
+  
 ];
 
 @NgModule({

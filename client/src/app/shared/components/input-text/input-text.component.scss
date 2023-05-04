@@ -1,0 +1,21 @@
+:host {
+    position: relative;
+    display: block;
+}
+
+.field {
+    outline: none;
+    border: 1px solid grey;
+    border-radius: 7px;
+    padding: 8px 20px 8px 12px;
+    font-size: 14px;
+}
+
+.icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    right: 8px;
+    cursor: pointer;
+}
