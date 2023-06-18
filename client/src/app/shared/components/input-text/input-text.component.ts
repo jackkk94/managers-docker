@@ -8,6 +8,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 })
 export class InputTextComponent implements ControlValueAccessor {
   @Input() placeholder: string = '';
+  @Input() readonly = false;
   @Input() label: string = '';
 
   public value = '';
@@ -18,7 +19,6 @@ export class InputTextComponent implements ControlValueAccessor {
     @Self() public control: NgControl
   ) {
     this.control.valueAccessor = this;
-
   }
 
   registerOnChange(fn: () => {}) {
@@ -31,7 +31,6 @@ export class InputTextComponent implements ControlValueAccessor {
 
   writeValue(value: string) {
     this.value = value;
-    //this.control.control?.setValue(value);
     this.onChange(value);
   }
 
@@ -43,5 +42,11 @@ export class InputTextComponent implements ControlValueAccessor {
   clear(): void{
     this.value = '';
     this.onChange(this.value);
+  }
+
+  public get notFilled(): boolean{
+    const errors = (this.control.errors) as {required: boolean};
+
+    return !this.value && this.control.invalid && errors?.required && this.control.dirty;
   }
 }

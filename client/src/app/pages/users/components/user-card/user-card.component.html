@@ -1,11 +1,11 @@
 <div class="d-flex align-items-center">
-    <a href="">
+    <a [routerLink]="link">
         <app-user-photo [link]="user.photoUrl"></app-user-photo>
     </a>
 
     <div class="ms-3">
-        <a href="" class="text-body fs-5">{{user.fullName}}</a>
-        <div class="text-secondary fs-6 position">{{user.position}}</div>
+        <a [routerLink]="link" class="text-body fs-5">{{user.fullName}}</a>
+        <div class="text-secondary fs-6 position">{{user.position.label}}</div>
     </div>
 </div>
 <div>
@@ -21,5 +21,5 @@
 
 <div>
     <label>Город:</label>
-    <span>{{user.office.city}}</span>
+    <span>{{user.city.label}}</span>
 </div>

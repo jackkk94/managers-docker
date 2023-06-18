@@ -1,69 +1,94 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { Guid } from 'guid-typescript';
+import { User } from 'src/app/common/models/user.model';
 
-import { User } from 'src/app/common/models/user';
+import {
+  DEFAULT_PAGE_SIZE,
+  PaginationEvent,
+} from 'src/app/shared/components/pagination/pagination.component';
+import { UsersFacade } from '../../users.facade.sevice';
+import {
+  Observable,
+  Subscription,
+  debounceTime,
+  forkJoin,
+  map,
+  tap,
+} from 'rxjs';
+import { UserFiltersData, UserSearchFilter } from '../../models/user-search.model';
+import { City } from 'src/app/common/models/city.model';
+import { Position } from 'src/app/common/models/position.model';
+import { LoaderService } from 'src/app/modules/core/services/loader.service';
+
+const DEBOUNCE_TIME = 1000;
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UsersComponent implements OnInit {
-  users = [
-    {
-      id: Guid.create(),
-      name: 'Петр',
-      surname: 'Иванов',
-      fullName: 'Петр Иванов',
-      position: 'Старший разработчик информационных систем',
-      phone: '+79345884333',
-      email: 'wdw@mail.ru',
-      office: { id: Guid.create(), name: 'Бц "Престиж"', city: 'Москва', isActive: true },
-      experience: 3,
-      age: 43,
-      isActive: true,
-      photoUrl:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR647xb6obvvTm3aIe-WYJai_Ee_zjMammJRJ1Pw5lKh-K-hBuiU-YT5rEMpKx7leH6t8g&usqp=CAU',
-      project: { id: Guid.create(), name: 'Мтс' },
-    },
-    {
-      id: Guid.create(),
-      name: 'Василий',
-      surname: 'Петров',
-      fullName: 'Василий Петров',
-      position: 'Ux-дизайнер',
-      phone: '+79322884333',
-      email: 'w2dw@mail.ru',
-      office: { id: Guid.create(), name: 'Бц "Призма"', city: 'Сочи', isActive: true },
-      experience: 4,
-      age: 23,
-      isActive: true,
-      photoUrl:
-        'https://www.lego.com/cdn/cs/catalog/assets/blte20bc64d388425f8/1/70902_1to1_robin_360_480.png?width=320',
-      project: { id: Guid.create(), name: 'Газпром' },
-    },
-    {
-      id: Guid.create(),
-      name: 'Павел',
-      surname: 'Петров',
-      fullName: 'Павел Петров',
-      position: 'Уборщик',
-      phone: '+79322184333',
-      email: 'u2dw@mail.ru',
-      office: { id: Guid.create(), name: 'Бц "Призма"', city: 'Сочи', isActive: true },
-      experience: 4,
-      age: 23,
-      isActive: true,
-      photoUrl:
-        'https://rus.team/images/article/7629/2018-11-26-462_19079-1_764927.webp',
-      project: { id: Guid.create(), name: 'Звезда смерти' },
-    },
-  ] as User[];
-  constructor() {}
+export class UsersComponent implements OnDestroy {
+  public users$ = this.usersFacade.users$;
 
-  ngOnInit(): void {}
+  public skip = this.usersFacade.skipValue$;
+  public take = DEFAULT_PAGE_SIZE;
+  public total$ = this.usersFacade.totalUsers$;
 
-  public onTextFilterChange(value: string){
-    console.log(value)
+  private subscription = new Subscription();
+
+  public filterData$ = this.usersFacade.filtersData$
+
+  public formFilters = new FormGroup({
+    name: new FormControl(''),
+    city: new FormControl(null),
+    position: new FormControl(null),
+  });
+
+  constructor(
+    private usersFacade: UsersFacade,
+    private cdr: ChangeDetectorRef,
+    public loaderService: LoaderService
+  ) {
+    this.usersFacade.LoadFiltersData();
+
+    this.subscription.add(
+      this.formFilters.valueChanges
+        .pipe(
+          tap(() => this.loaderService.show()),
+          debounceTime(DEBOUNCE_TIME)
+        )
+        .subscribe((form) => {
+          const filter = {
+            take: 10,
+            fullName: form.name,
+            city: form.city,
+            position: form.position,
+          } as UserSearchFilter;
+
+          this.usersFacade.updateFilters(filter);
+        })
+    );
+
+  }
+
+
+  public onPaginationChange(event: PaginationEvent): void {
+    this.usersFacade.updateFilters({ skip: event.pageIndex });
+  }
+
+  public resetFilters() {
+    this.formFilters.reset();
+  }
+
+  public ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

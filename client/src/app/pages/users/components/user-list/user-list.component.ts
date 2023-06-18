@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { User } from 'src/app/common/models/user';
+import { User } from 'src/app/common/models/user.model';
+
 
 @Component({
   selector: 'app-user-list',
@@ -10,7 +11,7 @@ export class UserListComponent implements OnInit {
 
   @Input()
   users: User[] = [];
-  
+
   constructor() { }
 
   ngOnInit(): void {

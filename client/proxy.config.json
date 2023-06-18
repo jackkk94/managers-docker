@@ -1,11 +1,36 @@
 {
-  "/list": {
-    "target": "http://backend:3000",
+  "/users": {
+    "target": "http://localhost:3000",
     "secure": false,
     "changeOrigin": true
   },
-  "/mindmap": {
-    "target": "http://backend:3000",
+  "/projects": {
+    "target": "http://localhost:3000",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/cities": {
+    "target": "http://localhost:3000",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/positions": {
+    "target": "http://localhost:3000",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/auth": {
+    "target": "http://localhost:3000",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/news": {
+    "target": "http://localhost:3000",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/newCategories": {
+    "target": "http://localhost:3000",
     "secure": false,
     "changeOrigin": true
   }

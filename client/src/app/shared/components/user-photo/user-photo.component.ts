@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 
+type Size = 'small' | 'medium' | 'big';
+
 @Component({
   selector: 'app-user-photo',
   templateUrl: './user-photo.component.html',
@@ -8,4 +10,7 @@ import { Component, Input } from '@angular/core';
 export class UserPhotoComponent {
   @Input()
   public link: string;
+
+  @Input()
+  public size: Size = 'medium'
 }

@@ -1,10 +1,8 @@
-<mat-form-field appearance="fill">
+<mat-form-field class="select" appearance="fill">
     <mat-label>{{label}}</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let item of data" [value]="item.value">
-        {{item.viewValue}}
-      </mat-option>
+    <mat-select [formControl]="getControl(control.control)" panelClass="example-panel-red" multiple>
+        <mat-option *ngFor="let item of data" [value]="item.id">
+            {{item.label}}
+        </mat-option>
     </mat-select>
-  </mat-form-field>
-  
-  
+</mat-form-field>

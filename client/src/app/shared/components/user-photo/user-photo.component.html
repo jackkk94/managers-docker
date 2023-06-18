@@ -1,5 +1,7 @@
-<div class="user-photo rounded-circle overflow-hidden border border-1 border-dark ms-2 bg-secondary">
-    <div class="photo" [ngStyle]="{'background-image': 'url(' + link + ')'}" *ngIf="link; else empty"></div>
+<div class="user-photo {{size}} rounded-circle overflow-hidden border border-1 border-dark ms-2 bg-secondary">
+    <div class="photo" 
+    [ngStyle]="{'background-image': 'url(' + link + ')'}" 
+    *ngIf="link; else empty"></div>
 
     <ng-template #empty>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="photo"
